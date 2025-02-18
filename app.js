@@ -13,7 +13,7 @@ const wrapAsync = require("./utils/wrapAsync.js");
 const Review = require("./models/review.js");
 const flash = require('connect-flash');
 const session = require('express-session');
-const MongoStore = require("connect-mongo");
+// const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
@@ -35,22 +35,22 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-const dbUrl = process.env.ATLASDB_URL ;
+// const dbUrl = process.env.ATLASDB_URL ;
 
-const store = MongoStore.create({
-    mongoUrl: dbUrl,
-    crypto: {
-        secret: process.env.SECRET,
-    },
-    touchafter: 24*3600, 
-});
+// const store = MongoStore.create({
+//     mongoUrl: dbUrl,
+//     crypto: {
+//         secret: process.env.SECRET,
+//     },
+//     touchafter: 24*3600, 
+// });
 
-store.on("error", () => {
-    console.log("error in mongo session store", err);
-});
+// store.on("error", () => {
+//     console.log("error in mongo session store", err);
+// });
 
 const sessionOptions = {
-    store: store, 
+    // store: store, 
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
@@ -71,12 +71,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use((req, res, next) => {
-    res.locals.success = req.flash("success");
-    res.locals.error = req.flash("error");
-    res.locals.currUser = req.user;
-    next();
-});
 
 // app.get("/demouser", async (req, res) => {
 //     let fakeUser = new User({
@@ -97,19 +91,54 @@ main()
 });
 
 async function main(){
-    // await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
-    await mongoose.connect(dbUrl);
+    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+    // await mongoose.connect(dbUrl);
 }
 
 // app.get("/", (req, res)=>{
 //     console.log("Hi, I am root.");
 // });
 
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.currUser = req.user;
+    next();
+});
+
 app.use("/", userRouter);
 
 //INDEX ROUTE
 app.get("/listings", wrapAsync(async (req, res)=>{
+    let allListings;
+
+    if(req.query.search) {
+        allListings = await Listing.find({});
+        allListings = allListings.filter((list) => list.title.includes(req.query.search));
+    }
+    else if(req.query.category) {
+        allListings = await Listing.find({category: req.query.category});
+    }
+    else {
+        allListings = await Listing.find({});
+    }
+    res.render("listings/index.ejs", {allListings});
+    
+}));
+
+app.get("/listings/sort", wrapAsync(async (req, res)=>{
+    function price(a, b) {
+        if (a.price<b.price) {
+            return -1;
+          } else if (a.price<b.price) {
+            return 1;
+          }
+          return 0;
+        }
+
     const allListings = await Listing.find({});
+    allListings.sort(price);
+    console.log(allListings);
     res.render("listings/index.ejs", {allListings});
     
 }));
@@ -136,7 +165,7 @@ app.get("/listings/:id/edit", isLoggedIn, isOwner, wrapAsync(async (req, res)=>{
 //SHOW ROUTE
 app.get("/listings/:id", wrapAsync(async (req, res)=>{
     let {id}= req.params;
-    const listing = await Listing.findById(id).populate({path: "reviews", populate: {path: "author"}}).populate("owner");
+    const listing = await Listing.findById(id).populate("owner").populate({path: "reviews", populate: {path: "author"}});
     if(!listing){
         req.flash("error", "Listing not found");
         res.redirect("/listings");
