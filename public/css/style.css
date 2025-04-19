@@ -60,7 +60,7 @@ body{
 .card-img-top{
     border-radius: 1rem !important;
     width: 100% !important;
-    object-fit: cover !important;
+    object-fit: fill !important;
 }
 
 .card-body {
@@ -120,3 +120,14 @@ font-weight: 400 ;
 
 } 
 
+@media(max-width:450px) {
+    .btns {
+        padding-left: 5.5rem;
+    }
+}
+
+@media(max-width:360px) {
+    .btns {
+        padding-left: 3rem;
+    }
+}
