@@ -1,7 +1,4 @@
 # StayNest – Don’t Hesitate. Take a Move 🏨
-
-![StayNest Banner](https://staynest-nomb.onrender.com/images/banner.jpg) <!-- Optional: Add your own banner image -->
-
 **Live Site**: [StayNest](https://staynest-nomb.onrender.com/listings)
 
 StayNest is a hotel booking web application that allows users to **search, compare, book**, and **review accommodations** with ease. Whether you're looking for a luxury stay or a budget-friendly option, StayNest offers location and price filters to find the perfect match.
