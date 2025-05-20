@@ -52,7 +52,7 @@ StayNest is a hotel booking web application that allows users to **search, compa
 ### Clone the Repo
 
 ```bash
-git clone https://github.com/your-username/staynest.git
+git clone https://github.com/Raghavdwivedi45/AirBNB/
 cd staynest
 npm install
 
@@ -79,5 +79,5 @@ MongoDB Atlas – Database hosting
 Raghav Dwivedi
 Demo: https://staynest-nomb.onrender.com/listings
 Email: raghavdwivedi463@gmail.com
-LinkedIn: YourLinkedIn
-GitHub: @your-username
+LinkedIn: [YourLinkedIn](https://www.linkedin.com/in/RaghavDwivedi463/)
+GitHub: @RaghavDwivedi45
