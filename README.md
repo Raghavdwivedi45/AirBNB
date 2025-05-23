@@ -79,5 +79,5 @@ MongoDB Atlas – Database hosting
 Raghav Dwivedi
 Demo: https://staynest-nomb.onrender.com/listings
 Email: raghavdwivedi463@gmail.com
-LinkedIn: (https://www.linkedin.com/in/RaghavDwivedi463/)
+LinkedIn: https://www.linkedin.com/in/RaghavDwivedi463/
 GitHub: @RaghavDwivedi45
